@@ -7,6 +7,7 @@ Created on Mon Jun 22 07:11:02 2020
 """
 
 # Load needed libraries
+import janitor
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -67,7 +68,7 @@ num_friends_by_id.sort(
 
 
 # TEST LOGIT MODEL - FOR FUN #
-raining_outside =     zip([*[1]*3, *[0]*30], [1]*33)
+raining_outside = zip([*[1]*3, *[0]*30], [1]*33)
 not_raining_outside = zip([*[1]*30, *[0]*3], [0]*33)
 
 df = pd.DataFrame(list(raining_outside) + list(not_raining_outside),
@@ -77,3 +78,22 @@ df['cons'] = 1
 
 model = sm2.Logit(endog=df['kids_in_park'], exog=df[['cons', 'raining']])
 print(model.fit().summary())
+
+# Data Import
+framingham = pd.read_csv("Framingham.csv")
+print(framingham)
+
+orders = pd.read_table('http://bit.ly/chiporders')
+
+orders.head()
+
+user_cols = ['user_id', 'age', 'gender', 'occupation', 'zip_code']
+users = pd.read_table('http://bit.ly/movieusers', sep='|', header=None, names=user_cols)
+users.head()
+
+df_clean = (
+    df
+    .clean_names()
+    .rename_column("_dmagecal", "age")
+    .rename_column("_gen", "sex")
+)
